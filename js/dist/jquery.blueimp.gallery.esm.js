@@ -1,8 +1,4 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global['blueimp-gallery'] = factory());
-}(this, (function () { 'use strict';
+import $ from 'jquery';
 
 /*
  * blueimp helper JS
@@ -556,7 +552,7 @@ Helper.extend(Gallery$2.prototype, {
     this.onslide(to);
   },
 
-  getIndex: function() {
+  getIndex: function () {
     return this.index
   },
 
@@ -2361,15 +2357,73 @@ Helper.extend(Gallery$2.prototype, {
   }
 });
 
+/*
+ * blueimp Gallery jQuery plugin
+ * https://github.com/blueimp/Gallery
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ */
+
+/* global window, document */
+
+// Global click handler to open links with data-gallery attribute
+// in the Gallery lightbox:
+
+$(document).on('click', '[data-gallery]', function (event) {
+  event.preventDefault();
+
+  // Get the container id from the data-gallery attribute:
+  var id = $(event.target).data('gallery');
+  var widget = $(id);
+  var container = (widget.length && widget) || $(Gallery$2.prototype.options.container);
+
+  var callbacks = {
+    onopen: function () {
+      container.data('gallery', Gallery$2).trigger('open');
+    },
+    onopened: function () {
+      container.trigger('opened');
+    },
+    onslide: function () {
+      container.trigger('slide', arguments);
+    },
+    onslideend: function () {
+      container.trigger('slideend', arguments);
+    },
+    onslidecomplete: function () {
+      container.trigger('slidecomplete', arguments);
+    },
+    onclose: function () {
+      container.trigger('close');
+    },
+    onclosed: function () {
+      container.trigger('closed').removeData('gallery');
+    }
+  };
+
+  var options = $.extend(
+    // Retrieve custom options from data-attributes
+    // on the Gallery widget:
+    container.data(),
+    { container: container[0], index: event.currentTarget, event: event },
+    callbacks
+  );
+
+  // Select all links with the same data-gallery attribute:
+  var links = (id !== undefined) ? $(("[data-gallery=" + id + "]")) : $('[data-gallery]');
+  if (options.filter) { links = links.filter(options.filter); }
+
+  return new Gallery$2(links, options)
+});
+
 if (typeof window !== 'undefined') {
   window.blueimp = window.blueimp || {};
   window.blueimp.Gallery = Gallery$2;
-
-  if (typeof window.jQuery === 'undefined') {
-    window.$ = Helper;
-  }
 }
 
-return Gallery$2;
-
-})));
+export default Gallery$2;
+//# sourceMappingURL=jquery.blueimp.gallery.esm.js.map
