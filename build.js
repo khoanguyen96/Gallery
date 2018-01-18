@@ -42,9 +42,9 @@ Object.keys(formats).forEach((format) => {
 
 // with jquery
 const jqueryFormats = {
-  cjs: 'js/dist/jquery.blueimp.gallery.cjs.js',
-  es: 'js/dist/jquery.blueimp.gallery.esm.js',
-  umd: 'js/dist/jquery.blueimp-gallery.umd.js'
+  cjs: 'dist/js/jquery.blueimp.gallery.cjs.js',
+  es: 'dist/js/jquery.blueimp.gallery.esm.js',
+  umd: 'dist/js/jquery.blueimp-gallery.umd.js'
 }
 
 Object.keys(jqueryFormats).forEach((format) => {
@@ -71,8 +71,8 @@ promise = promise.then(() => {
   delete pkg.private
   delete pkg.devDependencies
   delete pkg.scripts
-  fs.writeFileSync('js/dist/package.json', JSON.stringify(pkg, null, ' '), 'utf-8')
-  fs.writeFileSync('js/dist/LICENSE.txt', fs.readFileSync('LICENSE.txt', 'utf-8'), 'utf-8')
+  fs.writeFileSync('dist/package.json', JSON.stringify(pkg, null, ' '), 'utf-8')
+  fs.writeFileSync('dist/LICENSE.txt', fs.readFileSync('LICENSE.txt', 'utf-8'), 'utf-8')
 })
 
 promise.catch(err => console.error(err.stack))

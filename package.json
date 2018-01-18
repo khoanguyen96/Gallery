@@ -23,9 +23,9 @@
     "slideshow",
     "fullscreen"
   ],
-  "main": "js/dist/blueimp-gallery.cjs.js",
-  "module": "js/dist/blueimp-gallery.esm.js",
-  "browser": "js/dist/blueimp-gallery.umd.js",
+  "main": "dist/js/blueimp-gallery.cjs.js",
+  "module": "dist/js/blueimp-gallery.esm.js",
+  "browser": "dist/js/blueimp-gallery.umd.js",
   "scripts": {
     "format": "prettier-eslint --no-semi --single-quote --write **/*.js",
     "test": "eslint .",
