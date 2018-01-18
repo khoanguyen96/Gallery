@@ -1,8 +1,10 @@
 *
-!css/*.css
-!css/*.css.map
-!img/*.gif
-!img/*.png
-!img/*.svg
-!js/*.js
-!js/*.js.map
+!dist/css/*.css
+!dist/css/*.css.map
+!dist/img/*.gif
+!dist/img/*.png
+!dist/img/*.svg
+!dist/js/*.js
+!dist/js/*.js.map
+!dist/LICENSE.txt
+!dist/package.json
