@@ -27,12 +27,11 @@
   "module": "dist/js/blueimp-gallery.esm.js",
   "browser": "dist/js/blueimp-gallery.umd.js",
   "scripts": {
-    "format": "prettier-eslint --no-semi --single-quote --write **/*.js",
     "test": "eslint js/src",
     "build": "node build.js",
     "preversion": "npm test",
-    "version": "npm run build && git add -A js css",
-    "postversion": "git push --tags origin master master:gh-pages && npm publish"
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push --tags origin master && npm publish"
   },
   "homepage": "https://github.com/blueimp/Gallery",
   "author": {
