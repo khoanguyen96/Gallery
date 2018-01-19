@@ -2,10 +2,11 @@ language: node_js
 node_js:
   - node
 cache:
+  yarn: true
   directories:
   - node_modules
 install:
-  - npm install --silent
+  - npm install
 script:
   - npm run test
   - npm run build
