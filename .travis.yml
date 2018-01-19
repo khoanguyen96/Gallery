@@ -1,17 +1,16 @@
 language: node_js
 node_js:
-  - node
+- node
 cache:
   directories:
   - node_modules
 install:
-  - npm install --silent
+- npm install --silent
 script:
-  - npm run test
-  - npm run build
+- npm run test
+- npm run build
 after_success:
-  - .travis/push.sh
-
+- ".travis/push.sh"
 deploy:
   provider: npm
   email: khoa.tan.nguyen.96@gmail.com
@@ -22,4 +21,4 @@ deploy:
     repo: khoanguyen96/Gallery
 env:
   global:
-    secure: NOq7sIdL5FZ/2YjTpPYqzXwSjB9mloauEyReF5u1F0QkA1HOzySHlbm5kbN3pXpTChGg+xkISDmyKnrMQ3u7dxeCaGrKWd+qJFJoEaL+DeJqGM4+iZVNr1nl/aFZEk9iJGtcXxsEkLSBsOwDEh2vCaZLj2J7ufEZvV4JaOZgKDu6lNgzIAQqz2yqoj9cxRao0A3GusFw1I6NMAE1oNsXXSzaGYvzqF2G3frFp4YyFi6g6IDDEwLIWzdVFaIjbMtfKo05iHtFGsXOiI/EbqU1Md9R5zIrhPvIOrZgVwgdQSdA3uR/VLostzDUUeMj60wLAY0QgneP0HfDviuoV5acX5pbER53EuK+kEbyMkdUaIMwwTKgRGqqbcc4X/ixcXjOo7lYkswR1tcrmwcs0328T3A1y/vPkX5xq2HmEjgxAKRk/gTEdwc1Vx+CQEO44A/a0iO0aqE0Do5NsTCDCsdVGsqKpot4pZrD+4KbWlkjRenmeW7sus3L3uPxCRhnqZwJmlQA+HnusDXbHCr6UvKAUsGdxcTOyp02Xw/TgZI4ocN5cwscCM0Kzp8Bj3/WYR69c8JEh7Hfp+3j2sEyU/zrT1N9h1y9FMr8TGPMrWAaheuOSRLxPUYqeNOEV7ec1HDSD3LkcNIp+/yMuWpj9c2vaFUujrtLOPHhDOEQKtTsuSI=
+    secure: nyBzrxlggkWZAKIKnx6Gq/UujS9dE/mYb6Rzz5t1T1Nu8XYe9gug0gMo6m/rdjz5d4yxtkrKUz7NpYpb9oaAkjQlmXdZ55M11VRSQ8iCq2YDu2zbllThHpkOsblzNyFpeySRfFqYC0XO8dtMwuTtZigiFi2ENVp30waWIZ0tN1oBfrPlyoSvOL6KoQvOedow+PRROLOIUlE+ODtjGoMXxBK6ebkBtaqO+tDCMzfZyd4guZszuhTICxY3aGrwxcS3DBy43ghV+d6ruvWTD1Y29+BJB5xz1jBf6h6nolEXIKsg2Oi0ppByiIE3aRWqaLzAlUq3BVvGmRCcMYA+X/8DYkjV2brvhjQqMX+PAwv27JCeJQHJXR5NB7kDf80npygGLA/YRVYjMIsCMu27GMqn2aNyT5XjFcjTB1V3dnrW0vf9YdR7jKdE/iHYETtLOiVLfzEvm5BK6DowGuH0vJ5BvGZNqRQ+jm3iAfk6aCxZOdNNdvyz8uzmLiwtKC5UotgiQAe2ATYuDJC7ARhJfiiF3W9QRoi93M/zJAAqZliQ9EsdgUMSRQfgkwcZZWdJJLPye3aGTl4FL/scvLv8Ug2RCi3kYGQdZ2AubIJkU6UMQBREci+i+N0QRMRm1VWdjAcipyOjPS7QlHLYJhSfhcQn3QZh8V0WXpk44OXWgJIt0ng=

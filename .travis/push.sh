@@ -6,13 +6,14 @@ setup_git() {
 }
 
 commit_dist_directory() {
-  git add -f dist/*
-  git commit --message "Travis Build: $TRAVIS_TAG"
+  git checkout master                                 # leave DETACHED state
+  git add -f dist/*                                   # add all built dist files
+  git commit --message "Travis Build: $TRAVIS_TAG"    # commit as Travis CI
 }
 
 upload_git() {
-  git remote add origin https://${GH_TOKEN}@github.com/khoanguyen96/Gallery.git
-  git push --quiet --set-upstream origin master
+  git remote add origin-travis https://${GH_TOKEN}@github.com/khoanguyen96/Gallery.git
+  git push --quiet --set-upstream origin-travis master
 }
 
 setup_git
