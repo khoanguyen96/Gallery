@@ -86,7 +86,8 @@ Object.keys(jqueryFormats).forEach((format) => {
 promise = promise.then(() => new CleanCSS({
   returnPromise: true,
   compatibility: 'ie7',
-  sourceMap: true
+  sourceMap: true,
+  rebaseTo: path.resolve('./dist')
 }).minify([
   'css/blueimp-gallery.css',
   'css/blueimp-gallery-indicator.css',
