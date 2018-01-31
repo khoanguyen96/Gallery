@@ -36,20 +36,21 @@ It features swipe, mouse and keyboard navigation, transition effects, slideshow 
 <br>
 <h2>Lightbox image gallery</h2>
 <!-- The container for the list of example images -->
-<div id="links">
+<div id="links" class="links">
   <a href="https://dummyimage.com/800/ffffff/000000" title="800x800" data-gallery>
-      <img src="https://dummyimage.com/800/ffffff/000000" alt="800x800">
+      <img src="https://dummyimage.com/400/ffffff/000000" alt="400x400">
   </a>
-  <a href="https://dummyimage.com/1600/ffffff/000000" title="1600x1600" data-gallery>
-      <img src="https://dummyimage.com/1600/ffffff/000000" alt="1600x1600">
+  <a href="https://dummyimage.com/800/000000/ffffff" title="800x800" data-gallery>
+    <img src="https://dummyimage.com/400/000000/ffffff" alt="400x400">
+</a>
+  <a href="https://dummyimage.com/800/ffffff/000000" title="800x800" data-gallery>
+      <img src="https://dummyimage.com/400/ffffff/000000" alt="400x400">
   </a>
-  <a href="https://dummyimage.com/1280/000000/ffffff" title="1280x1280" data-gallery>
-      <img src="https://dummyimage.com/1280/000000/ffffff" alt="1280x1280">
-  </a>
-  <a href="https://dummyimage.com/400/000000/ffffff" title="400x400" data-gallery>
+  <a href="https://dummyimage.com/800/000000/ffffff" title="800x800" data-gallery>
     <img src="https://dummyimage.com/400/000000/ffffff" alt="400x400">
   </a>
 </div>
+
 <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
 <div id="blueimp-gallery" class="blueimp-gallery" data-start-slideshow="true">
     <div class="slides"></div>
@@ -60,7 +61,7 @@ It features swipe, mouse and keyboard navigation, transition effects, slideshow 
     <a class="play-pause"></a>
     <ol class="indicator"></ol>
 </div>
-<script src="js/vendor/jquery.js"></script>
+<script src="js/vendor/jquery-3.3.1.js"></script>
 <script src="dist/js/jquery.blueimp-gallery.umd.js"></script>
 </body>
 </html>
