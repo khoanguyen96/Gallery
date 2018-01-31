@@ -58,8 +58,8 @@ Object.keys(formats).forEach((format) => {
 
 // with jquery
 const jqueryFormats = {
-  cjs: 'dist/js/jquery.blueimp.gallery.cjs.js',
-  es: 'dist/js/jquery.blueimp.gallery.esm.js',
+  cjs: 'dist/js/jquery.blueimp-gallery.cjs.js',
+  es: 'dist/js/jquery.blueimp-gallery.esm.js',
   umd: 'dist/js/jquery.blueimp-gallery.umd.js'
 }
 
