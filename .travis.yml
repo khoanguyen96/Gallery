@@ -1,17 +1,19 @@
 language: node_js
+
 node_js:
   - node
+
 cache:
-  yarn: true
   directories:
-  - node_modules
+    - node_modules
+  yarn: true
+
 install:
-  - npm install
+  - yarn install --silent --non-interactive
+
 script:
-  - npm run test
-  - npm run build
-after_success:
-  - .travis/push.sh
+  - yarn run test
+  - yarn run build
 
 deploy:
   provider: npm
@@ -21,6 +23,3 @@ deploy:
   on:
     tags: true
     repo: khoanguyen96/Gallery
-env:
-  global:
-    secure: NOq7sIdL5FZ/2YjTpPYqzXwSjB9mloauEyReF5u1F0QkA1HOzySHlbm5kbN3pXpTChGg+xkISDmyKnrMQ3u7dxeCaGrKWd+qJFJoEaL+DeJqGM4+iZVNr1nl/aFZEk9iJGtcXxsEkLSBsOwDEh2vCaZLj2J7ufEZvV4JaOZgKDu6lNgzIAQqz2yqoj9cxRao0A3GusFw1I6NMAE1oNsXXSzaGYvzqF2G3frFp4YyFi6g6IDDEwLIWzdVFaIjbMtfKo05iHtFGsXOiI/EbqU1Md9R5zIrhPvIOrZgVwgdQSdA3uR/VLostzDUUeMj60wLAY0QgneP0HfDviuoV5acX5pbER53EuK+kEbyMkdUaIMwwTKgRGqqbcc4X/ixcXjOo7lYkswR1tcrmwcs0328T3A1y/vPkX5xq2HmEjgxAKRk/gTEdwc1Vx+CQEO44A/a0iO0aqE0Do5NsTCDCsdVGsqKpot4pZrD+4KbWlkjRenmeW7sus3L3uPxCRhnqZwJmlQA+HnusDXbHCr6UvKAUsGdxcTOyp02Xw/TgZI4ocN5cwscCM0Kzp8Bj3/WYR69c8JEh7Hfp+3j2sEyU/zrT1N9h1y9FMr8TGPMrWAaheuOSRLxPUYqeNOEV7ec1HDSD3LkcNIp+/yMuWpj9c2vaFUujrtLOPHhDOEQKtTsuSI=
