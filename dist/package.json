@@ -25,6 +25,7 @@
  "main": "dist/js/blueimp-gallery.cjs.js",
  "module": "dist/js/blueimp-gallery.esm.js",
  "browser": "dist/js/blueimp-gallery.umd.js",
+ "style": "dist/css/blueimp-gallery.min.css",
  "homepage": "https://github.com/blueimp/Gallery",
  "author": {
   "name": "Sebastian Tschan",
