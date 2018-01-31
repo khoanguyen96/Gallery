@@ -87,7 +87,7 @@ promise = promise.then(() => new CleanCSS({
   returnPromise: true,
   compatibility: 'ie7',
   sourceMap: true,
-  rebaseTo: path.resolve('./dist')
+  rebase: false
 }).minify([
   'css/blueimp-gallery.css',
   'css/blueimp-gallery-indicator.css',
