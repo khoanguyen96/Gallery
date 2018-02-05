@@ -25,7 +25,6 @@
   "main": "dist/js/blueimp-gallery.cjs.js",
   "module": "dist/js/blueimp-gallery.esm.js",
   "browser": "dist/js/blueimp-gallery.umd.js",
-  "style": "dist/css/blueimp-gallery.min.css",
   "scripts": {
     "test": "eslint js/src",
     "build": "node build.js",
