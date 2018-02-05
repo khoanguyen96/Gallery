@@ -28,9 +28,8 @@
   "scripts": {
     "test": "eslint js/src",
     "build": "node build.js",
-    "preversion": "npm test",
     "version": "npm run build && git add -A dist",
-    "postversion": "git push --tags origin master && npm publish"
+    "postversion": "git push --tags origin master"
   },
   "homepage": "https://github.com/blueimp/Gallery",
   "author": {
