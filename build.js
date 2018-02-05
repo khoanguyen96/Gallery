@@ -24,8 +24,8 @@ promise = promise.then(() => {
   spinner.start()
 
   // eslint-disable-next-line
-  new Promise((resolve, reject) => {
-    const dist = path.resolve('./dist')
+  return new Promise((resolve, reject) => {
+    const dist = path.resolve('./dist/*')
     rm(dist, (err) => {
       if (err) return reject(err)
       return resolve()
