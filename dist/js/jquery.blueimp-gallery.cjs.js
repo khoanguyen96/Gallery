@@ -1,3 +1,5 @@
+'use strict';
+
 function __$$styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
@@ -24,6 +26,10 @@ function __$$styleInject(css, ref) {
     style.appendChild(document.createTextNode(css));
   }
 }
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var $ = _interopDefault(require('jquery'));
 
 /*
  * blueimp helper JS
@@ -2382,6 +2388,69 @@ Helper.extend(Gallery$2.prototype, {
   }
 });
 
+/*
+ * blueimp Gallery jQuery plugin
+ * https://github.com/blueimp/Gallery
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ */
+
+/* global window, document */
+
+// Global click handler to open links with data-gallery attribute
+// in the Gallery lightbox:
+
+$(document).on('click', '[data-gallery]', function (event) {
+  event.preventDefault();
+
+  // Get the container id from the data-gallery attribute:
+  var id = $(event.target).data('gallery');
+  var widget = $(id);
+  var container = (widget.length && widget) || $(Gallery$2.prototype.options.container);
+
+  var callbacks = {
+    onopen: function () {
+      container.data('gallery', Gallery$2).trigger('open');
+    },
+    onopened: function () {
+      container.trigger('opened');
+    },
+    onslide: function () {
+      container.trigger('slide', arguments);
+    },
+    onslideend: function () {
+      container.trigger('slideend', arguments);
+    },
+    onslidecomplete: function () {
+      container.trigger('slidecomplete', arguments);
+    },
+    onclose: function () {
+      container.trigger('close');
+    },
+    onclosed: function () {
+      container.trigger('closed').removeData('gallery');
+    }
+  };
+
+  var options = $.extend(
+    // Retrieve custom options from data-attributes
+    // on the Gallery widget:
+    container.data(),
+    { container: container[0], index: event.currentTarget, event: event },
+    callbacks
+  );
+
+  // Select all links with the same data-gallery attribute:
+  var links = (id !== undefined) ? $(("[data-gallery=" + id + "]")) : $('[data-gallery]');
+  if (options.filter) { links = links.filter(options.filter); }
+
+  return new Gallery$2(links, options)
+});
+
 var css = "@charset \"UTF-8\";\n/*\n * blueimp Gallery CSS\n * https://github.com/blueimp/Gallery\n *\n * Copyright 2013, Sebastian Tschan\n * https://blueimp.net\n *\n * Licensed under the MIT license:\n * https://opensource.org/licenses/MIT\n */\n\n.blueimp-gallery,\n.blueimp-gallery > .slides > .slide > .slide-content {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  /* Prevent artifacts */\n  -webkit-backface-visibility: hidden;\n     -moz-backface-visibility: hidden;\n          backface-visibility: hidden;\n}\n.blueimp-gallery > .slides > .slide > .slide-content {\n  margin: auto;\n  width: auto;\n  height: auto;\n  max-width: 100%;\n  max-height: 100%;\n  opacity: 1;\n}\n.blueimp-gallery {\n  position: fixed;\n  z-index: 999999;\n  overflow: hidden;\n  background: #000;\n  background: rgba(0, 0, 0, 0.9);\n  opacity: 0;\n  display: none;\n  direction: ltr;\n  touch-action: none;\n}\n.blueimp-gallery-carousel {\n  position: relative;\n  z-index: auto;\n  margin: 1em auto;\n  /* Set the carousel width/height ratio to 16/9: */\n  padding-bottom: 56.25%;\n  -webkit-box-shadow: 0 0 10px #000;\n          box-shadow: 0 0 10px #000;\n  touch-action: pan-y;\n}\n.blueimp-gallery-display {\n  display: block;\n  opacity: 1;\n}\n.blueimp-gallery > .slides {\n  position: relative;\n  height: 100%;\n  overflow: hidden;\n}\n.blueimp-gallery-carousel > .slides {\n  position: absolute;\n}\n.blueimp-gallery > .slides > .slide {\n  position: relative;\n  float: left;\n  height: 100%;\n  text-align: center;\n  -webkit-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);\n     -moz-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);\n       -o-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);\n          transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);\n}\n.blueimp-gallery,\n.blueimp-gallery > .slides > .slide > .slide-content {\n  -webkit-transition: opacity 0.2s linear;\n  -o-transition: opacity 0.2s linear;\n  -moz-transition: opacity 0.2s linear;\n  transition: opacity 0.2s linear;\n}\n.blueimp-gallery > .slides > .slide-loading {\n  background: url(../img/loading.gif) center no-repeat;\n  -o-background-size: 64px 64px;\n     background-size: 64px 64px;\n}\n.blueimp-gallery > .slides > .slide-loading > .slide-content {\n  opacity: 0;\n}\n.blueimp-gallery > .slides > .slide-error {\n  background: url(../img/error.png) center no-repeat;\n}\n.blueimp-gallery > .slides > .slide-error > .slide-content {\n  display: none;\n}\n.blueimp-gallery > .prev,\n.blueimp-gallery > .next {\n  position: absolute;\n  top: 50%;\n  left: 15px;\n  width: 40px;\n  height: 40px;\n  margin-top: -23px;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 60px;\n  font-weight: 100;\n  line-height: 30px;\n  color: #fff;\n  text-decoration: none;\n  text-shadow: 0 0 2px #000;\n  text-align: center;\n  background: #222;\n  background: rgba(0, 0, 0, 0.5);\n  -webkit-box-sizing: content-box;\n     -moz-box-sizing: content-box;\n          box-sizing: content-box;\n  border: 3px solid #fff;\n  -webkit-border-radius: 23px;\n          border-radius: 23px;\n  opacity: 0.5;\n  cursor: pointer;\n  display: none;\n}\n.blueimp-gallery > .next {\n  left: auto;\n  right: 15px;\n}\n.blueimp-gallery > .close,\n.blueimp-gallery > .title {\n  position: absolute;\n  top: 15px;\n  left: 15px;\n  margin: 0 40px 0 0;\n  font-size: 20px;\n  line-height: 30px;\n  color: #fff;\n  text-shadow: 0 0 2px #000;\n  opacity: 0.8;\n  display: none;\n}\n.blueimp-gallery > .close {\n  padding: 15px;\n  right: 15px;\n  left: auto;\n  margin: -15px;\n  font-size: 30px;\n  text-decoration: none;\n  cursor: pointer;\n}\n.blueimp-gallery > .play-pause {\n  position: absolute;\n  right: 15px;\n  bottom: 15px;\n  width: 15px;\n  height: 15px;\n  background: url(../img/play-pause.png) 0 0 no-repeat;\n  cursor: pointer;\n  opacity: 0.5;\n  display: none;\n}\n.blueimp-gallery-playing > .play-pause {\n  background-position: -15px 0;\n}\n.blueimp-gallery > .prev:hover,\n.blueimp-gallery > .next:hover,\n.blueimp-gallery > .close:hover,\n.blueimp-gallery > .title:hover,\n.blueimp-gallery > .play-pause:hover {\n  color: #fff;\n  opacity: 1;\n}\n.blueimp-gallery-controls > .prev,\n.blueimp-gallery-controls > .next,\n.blueimp-gallery-controls > .close,\n.blueimp-gallery-controls > .title,\n.blueimp-gallery-controls > .play-pause {\n  display: block;\n  /* Fix z-index issues (controls behind slide element) on Android: */\n  -webkit-transform: translateZ(0);\n     -moz-transform: translateZ(0);\n          transform: translateZ(0);\n}\n.blueimp-gallery-single > .prev,\n.blueimp-gallery-left > .prev,\n.blueimp-gallery-single > .next,\n.blueimp-gallery-right > .next,\n.blueimp-gallery-single > .play-pause {\n  display: none;\n}\n.blueimp-gallery > .slides > .slide > .slide-content,\n.blueimp-gallery > .prev,\n.blueimp-gallery > .next,\n.blueimp-gallery > .close,\n.blueimp-gallery > .play-pause {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n/* Replace PNGs with SVGs for capable browsers (excluding IE<9) */\nbody:last-child .blueimp-gallery > .slides > .slide-error {\n  background-image: url(../img/error.svg);\n}\nbody:last-child .blueimp-gallery > .play-pause {\n  width: 20px;\n  height: 20px;\n  -o-background-size: 40px 20px;\n     background-size: 40px 20px;\n  background-image: url(../img/play-pause.svg);\n}\nbody:last-child .blueimp-gallery-playing > .play-pause {\n  background-position: -20px 0;\n}\n\n/* IE7 fixes */\n*+html .blueimp-gallery > .slides > .slide {\n  min-height: 300px;\n}\n*+html .blueimp-gallery > .slides > .slide > .slide-content {\n  position: relative;\n}\n";
 __$$styleInject(css);
 
@@ -2394,12 +2463,7 @@ __$$styleInject(css$4);
 if (typeof window !== 'undefined') {
   window.blueimp = window.blueimp || {};
   window.blueimp.Gallery = Gallery$2;
-
-  // use helper if jQuery isn't present
-  if (typeof window.jQuery === 'undefined') {
-    window.$ = Helper;
-  }
 }
 
-export default Gallery$2;
-//# sourceMappingURL=blueimp-gallery.esm.js.map
+module.exports = Gallery$2;
+//# sourceMappingURL=jquery.blueimp-gallery.cjs.js.map

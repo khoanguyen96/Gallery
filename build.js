@@ -54,9 +54,6 @@ const formats = {
 }
 
 const commonPlugins = [
-  resolve(),
-  commonjs(),
-  buble(),
   postcss({
     plugins: [
       autoprefixer(),
@@ -64,7 +61,10 @@ const commonPlugins = [
         loadPaths: ['./img']
       })
     ]
-  })
+  }),
+  resolve(),
+  commonjs(),
+  buble()
 ]
 
 Object.keys(formats).forEach((format) => {
