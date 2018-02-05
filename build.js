@@ -32,8 +32,36 @@ promise = promise.then(() => {
   })
 })
 
-// Compile source code into a distributable format with Buble
+// Copy package.json and LICENSE.txt
+promise = promise.then(() => {
+  delete pkg.private
+  delete pkg.devDependencies
+  delete pkg.scripts
+  fs.writeFileSync('dist/package.json', JSON.stringify(pkg, null, ' '), 'utf-8')
+  fs.writeFileSync('dist/LICENSE.txt', fs.readFileSync('LICENSE.txt', 'utf-8'), 'utf-8')
+})
 
+// Copy Images
+promise = promise.then(() => fs.copySync('img', 'dist/img'))
+
+// Compile / Minify CSS
+promise = promise.then(() => new CleanCSS({
+  returnPromise: true,
+  compatibility: 'ie7',
+  sourceMap: true,
+  rebase: false
+}).minify([
+  'css/blueimp-gallery.css',
+  'css/blueimp-gallery-indicator.css',
+  'css/blueimp-gallery-video.css'
+]).then(output => {
+  fs.mkdirSync('dist/css')
+  fs.writeFileSync('dist/css/blueimp-gallery.min.css', output.styles, 'utf-8')
+  fs.writeFileSync('dist/css/blueimp-gallery.min.css.map', JSON.stringify(output.sourceMap), 'utf-8')
+  fs.appendFileSync('dist/css/blueimp-gallery.min.css', '\n/*# sourceMappingURL=blueimp-gallery.min.css.map */')
+}))
+
+/* Compile source code into a distributable format with Buble */
 // without jquery
 const formats = {
   cjs: pkg.main,
@@ -80,35 +108,6 @@ Object.keys(jqueryFormats).forEach((format) => {
       jquery: '$'
     }
   })))
-})
-
-// Compile / Minify CSS
-promise = promise.then(() => new CleanCSS({
-  returnPromise: true,
-  compatibility: 'ie7',
-  sourceMap: true,
-  rebase: false
-}).minify([
-  'css/blueimp-gallery.css',
-  'css/blueimp-gallery-indicator.css',
-  'css/blueimp-gallery-video.css'
-]).then(output => {
-  fs.mkdirSync('dist/css')
-  fs.writeFileSync('dist/css/blueimp-gallery.min.css', output.styles, 'utf-8')
-  fs.writeFileSync('dist/css/blueimp-gallery.min.css.map', JSON.stringify(output.sourceMap), 'utf-8')
-  fs.appendFileSync('dist/css/blueimp-gallery.min.css', '\n/*# sourceMappingURL=blueimp-gallery.min.css.map */')
-}))
-
-// Copy Images
-promise = promise.then(() => fs.copySync('img', 'dist/img'))
-
-// Copy package.json and LICENSE.txt
-promise = promise.then(() => {
-  delete pkg.private
-  delete pkg.devDependencies
-  delete pkg.scripts
-  fs.writeFileSync('dist/package.json', JSON.stringify(pkg, null, ' '), 'utf-8')
-  fs.writeFileSync('dist/LICENSE.txt', fs.readFileSync('LICENSE.txt', 'utf-8'), 'utf-8')
 })
 
 // Finish!
