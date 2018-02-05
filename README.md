@@ -86,12 +86,6 @@ yarn add @khoanguyen96/blueimp-gallery
 If you're just using this in an HTML page, then you can use unpkg CDN instead
 and skip the [installation step](#installation)
 
-Include the Gallery stylesheet in the head section of your webpage:
-
-``` html
-<link rel="stylesheet" href="https://unpkg.com/@khoanguyen96/blueimp-gallery/dist/css/blueimp-gallery.min.css">
-```
-
 Add the following HTML snippet with the Gallery widget to the body of your
 webpage:
 
