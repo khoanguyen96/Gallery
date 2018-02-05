@@ -7,6 +7,10 @@ import './blueimp-gallery-youtube'
 import helper from './blueimp-helper'
 import Gallery from './blueimp-gallery'
 
+import '../../css/blueimp-gallery.css'
+import '../../css/blueimp-gallery-indicator.css'
+import '../../css/blueimp-gallery-video.css'
+
 if (typeof window !== 'undefined') {
   window.blueimp = window.blueimp || {}
   window.blueimp.Gallery = Gallery
