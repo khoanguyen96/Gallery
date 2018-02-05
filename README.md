@@ -3,6 +3,7 @@
 - [Demo](#demo)
 - [Description](#description)
 - [Setup](#setup)
+    - [Installation](#installation)
     - [Lightbox setup](#lightbox-setup)
     - [Controls](#controls)
     - [Carousel setup](#carousel-setup)
@@ -51,7 +52,7 @@ There are no major differences from the original.
 Except for:
 
 - fullscreen, indicator, video, youtube and vimeo functionality are included by default
-- jquery-plugin can be included as a standalone script (doesn't need to include the Gallery, as it is included by default)
+- jquery-plugin can be included as a standalone script (doesn't need to include the Gallery, as it is already included)
 - all minified js files are bundled with [Rollup](https://github.com/rollup/rollup)
 
 Future Plans:
@@ -72,19 +73,23 @@ extended to display additional content types.
 
 ## Setup
 
-### Lightbox setup
-Copy the **css**, **img** and **js** directories to your website.
-
-Include the Gallery stylesheet in the head section of your webpage:
-
-```html
-<link rel="stylesheet" href="css/blueimp-gallery.min.css">
+### Installation
+``` bash
+npm install @khoanguyen96/blueimp-gallery
 ```
+
+``` bash
+yarn add @khoanguyen96/blueimp-gallery
+```
+
+### Lightbox setup
+If you're just using this in an HTML page, then you can use unpkg CDN instead
+and skip the [installation step](#installation)
 
 Add the following HTML snippet with the Gallery widget to the body of your
 webpage:
 
-```html
+``` html
 <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
 <div id="blueimp-gallery" class="blueimp-gallery">
     <div class="slides"></div>
@@ -100,7 +105,7 @@ webpage:
 Include the Gallery script at the bottom of the body of your webpage:
 
 ```html
-<script src="js/blueimp-gallery.min.js"></script>
+<script src="https://unpkg.com/@khoanguyen96/bluimp-gallery"></script>
 ```
 
 Create a list of links to image files, optionally with enclosed thumbnails and
@@ -548,15 +553,22 @@ The blueimp Gallery can be initialized by simply calling it as a function with
 an array of links as first argument and an optional options object as second
 argument:
 
+**Note** You don't need to import the Gallery if this is in browser, as it's
+automatically included as `blueimp.Gallery`
+
 ```js
-var gallery = blueimp.Gallery(links, options);
+import blueimp from '@khoanguyen96/blueimp-gallery';
+
+const gallery = blueimp.Gallery(links, options);
 ```
 
 The links array can be a list of URL strings or a list of objects with URL
 properties:
 
 ```js
-var gallery = blueimp.Gallery([
+import blueimp from '@khoanguyen96/blueimp-gallery';
+
+const gallery = blueimp.Gallery([
     'https://example.org/images/banana.jpg',
     'https://example.org/images/apple.jpg',
     'https://example.org/images/orange.jpg'
@@ -564,7 +576,9 @@ var gallery = blueimp.Gallery([
 ```
 
 ```js
-var gallery = blueimp.Gallery([
+import blueimp from '@khoanguyen96/blueimp-gallery';
+
+const gallery = blueimp.Gallery([
     {
         title: 'Banana',
         href: 'https://example.org/images/banana.jpg',
@@ -601,10 +615,10 @@ following public API methods:
 
 ```js
 // Return the current slide index position:
-var pos = gallery.getIndex();
+const pos = gallery.getIndex();
 
 // Return the total number of slides:
-var count = gallery.getNumber();
+const count = gallery.getNumber();
 
 // Move to the previous slide:
 gallery.prev();
@@ -919,7 +933,7 @@ minified Gallery script with the jQuery plugin version and include it after
 including [jQuery](https://jquery.com/):
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="js/jquery.blueimp-gallery.min.js"></script>
 ```
 
@@ -1054,7 +1068,7 @@ The [jQuery plugin](#jquery-plugin) requires
 
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="js/jquery.blueimp-gallery.min.js"></script>
+<script src="https://unpkg.com/@khoanguyen96/blueimp-gallery/dist/js/jquery.blueimp-gallery.umd.js"></script>
 ```
 
 Please note that the jQuery plugin is an optional extension and not required for

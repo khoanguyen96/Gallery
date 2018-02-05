@@ -9,9 +9,10 @@ const rollup = require('rollup')
 const resolve = require('rollup-plugin-node-resolve')
 const commonjs = require('rollup-plugin-commonjs')
 const buble = require('rollup-plugin-buble')
+const postcss = require('rollup-plugin-postcss')
+const autoprefixer = require('autoprefixer')
+const assets = require('postcss-assets')
 const uglify = require('rollup-plugin-uglify')
-
-const CleanCSS = require('clean-css')
 
 const pkg = require('./package.json')
 
@@ -32,8 +33,19 @@ promise = promise.then(() => {
   })
 })
 
-// Compile source code into a distributable format with Buble
+// Copy package.json and LICENSE.txt
+promise = promise.then(() => {
+  delete pkg.private
+  delete pkg.devDependencies
+  delete pkg.scripts
+  fs.writeFileSync('dist/package.json', JSON.stringify(pkg, null, ' '), 'utf-8')
+  fs.writeFileSync('dist/LICENSE.txt', fs.readFileSync('LICENSE.txt', 'utf-8'), 'utf-8')
+})
 
+// Copy Images
+promise = promise.then(() => fs.copySync('img', 'dist/img'))
+
+/* Compile source code into a distributable format with Buble */
 // without jquery
 const formats = {
   cjs: pkg.main,
@@ -41,9 +53,24 @@ const formats = {
   umd: pkg.browser
 }
 
+const commonPlugins = [
+  postcss({
+    plugins: [
+      autoprefixer(),
+      assets({
+        loadPaths: ['./img']
+      })
+    ]
+  }),
+  resolve(),
+  commonjs(),
+  buble()
+]
+
 Object.keys(formats).forEach((format) => {
-  const plugins = [resolve(), commonjs(), buble()]
-  if (format === 'umd') plugins.push(uglify())
+  const plugins = ((format === 'umd'))
+    ? [uglify()].concat(commonPlugins)
+    : commonPlugins
 
   promise = promise.then(() => rollup.rollup({
     input: 'js/src/main.js',
@@ -64,8 +91,9 @@ const jqueryFormats = {
 }
 
 Object.keys(jqueryFormats).forEach((format) => {
-  const plugins = [resolve(), commonjs(), buble()]
-  if (format === 'umd') plugins.push(uglify())
+  const plugins = ((format === 'umd'))
+    ? [uglify()].concat(commonPlugins)
+    : commonPlugins
 
   promise = promise.then(() => rollup.rollup({
     input: 'js/src/main-jquery.js',
@@ -80,35 +108,6 @@ Object.keys(jqueryFormats).forEach((format) => {
       jquery: '$'
     }
   })))
-})
-
-// Compile / Minify CSS
-promise = promise.then(() => new CleanCSS({
-  returnPromise: true,
-  compatibility: 'ie7',
-  sourceMap: true,
-  rebase: false
-}).minify([
-  'css/blueimp-gallery.css',
-  'css/blueimp-gallery-indicator.css',
-  'css/blueimp-gallery-video.css'
-]).then(output => {
-  fs.mkdirSync('dist/css')
-  fs.writeFileSync('dist/css/blueimp-gallery.min.css', output.styles, 'utf-8')
-  fs.writeFileSync('dist/css/blueimp-gallery.min.css.map', JSON.stringify(output.sourceMap), 'utf-8')
-  fs.appendFileSync('dist/css/blueimp-gallery.min.css', '\n/*# sourceMappingURL=blueimp-gallery.min.css.map */')
-}))
-
-// Copy Images
-promise = promise.then(() => fs.copySync('img', 'dist/img'))
-
-// Copy package.json and LICENSE.txt
-promise = promise.then(() => {
-  delete pkg.private
-  delete pkg.devDependencies
-  delete pkg.scripts
-  fs.writeFileSync('dist/package.json', JSON.stringify(pkg, null, ' '), 'utf-8')
-  fs.writeFileSync('dist/LICENSE.txt', fs.readFileSync('LICENSE.txt', 'utf-8'), 'utf-8')
 })
 
 // Finish!

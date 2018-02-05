@@ -27,6 +27,10 @@ function __$$styleInject(css, ref) {
   }
 }
 
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var $ = _interopDefault(require('jquery'));
+
 /*
  * blueimp helper JS
  * https://github.com/blueimp/Gallery
@@ -2384,6 +2388,69 @@ Helper.extend(Gallery$2.prototype, {
   }
 });
 
+/*
+ * blueimp Gallery jQuery plugin
+ * https://github.com/blueimp/Gallery
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ */
+
+/* global window, document */
+
+// Global click handler to open links with data-gallery attribute
+// in the Gallery lightbox:
+
+$(document).on('click', '[data-gallery]', function (event) {
+  event.preventDefault();
+
+  // Get the container id from the data-gallery attribute:
+  var id = $(event.target).data('gallery');
+  var widget = $(id);
+  var container = (widget.length && widget) || $(Gallery$2.prototype.options.container);
+
+  var callbacks = {
+    onopen: function () {
+      container.data('gallery', Gallery$2).trigger('open');
+    },
+    onopened: function () {
+      container.trigger('opened');
+    },
+    onslide: function () {
+      container.trigger('slide', arguments);
+    },
+    onslideend: function () {
+      container.trigger('slideend', arguments);
+    },
+    onslidecomplete: function () {
+      container.trigger('slidecomplete', arguments);
+    },
+    onclose: function () {
+      container.trigger('close');
+    },
+    onclosed: function () {
+      container.trigger('closed').removeData('gallery');
+    }
+  };
+
+  var options = $.extend(
+    // Retrieve custom options from data-attributes
+    // on the Gallery widget:
+    container.data(),
+    { container: container[0], index: event.currentTarget, event: event },
+    callbacks
+  );
+
+  // Select all links with the same data-gallery attribute:
+  var links = (id !== undefined) ? $(("[data-gallery=" + id + "]")) : $('[data-gallery]');
+  if (options.filter) { links = links.filter(options.filter); }
+
+  return new Gallery$2(links, options)
+});
+
 var css = "@charset \"UTF-8\";\n/*\n * blueimp Gallery CSS\n * https://github.com/blueimp/Gallery\n *\n * Copyright 2013, Sebastian Tschan\n * https://blueimp.net\n *\n * Licensed under the MIT license:\n * https://opensource.org/licenses/MIT\n */\n\n.blueimp-gallery,\n.blueimp-gallery > .slides > .slide > .slide-content {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  /* Prevent artifacts */\n  -webkit-backface-visibility: hidden;\n     -moz-backface-visibility: hidden;\n          backface-visibility: hidden;\n}\n.blueimp-gallery > .slides > .slide > .slide-content {\n  margin: auto;\n  width: auto;\n  height: auto;\n  max-width: 100%;\n  max-height: 100%;\n  opacity: 1;\n}\n.blueimp-gallery {\n  position: fixed;\n  z-index: 999999;\n  overflow: hidden;\n  background: #000;\n  background: rgba(0, 0, 0, 0.9);\n  opacity: 0;\n  display: none;\n  direction: ltr;\n  touch-action: none;\n}\n.blueimp-gallery-carousel {\n  position: relative;\n  z-index: auto;\n  margin: 1em auto;\n  /* Set the carousel width/height ratio to 16/9: */\n  padding-bottom: 56.25%;\n  -webkit-box-shadow: 0 0 10px #000;\n          box-shadow: 0 0 10px #000;\n  touch-action: pan-y;\n}\n.blueimp-gallery-display {\n  display: block;\n  opacity: 1;\n}\n.blueimp-gallery > .slides {\n  position: relative;\n  height: 100%;\n  overflow: hidden;\n}\n.blueimp-gallery-carousel > .slides {\n  position: absolute;\n}\n.blueimp-gallery > .slides > .slide {\n  position: relative;\n  float: left;\n  height: 100%;\n  text-align: center;\n  -webkit-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);\n     -moz-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);\n       -o-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);\n          transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);\n}\n.blueimp-gallery,\n.blueimp-gallery > .slides > .slide > .slide-content {\n  -webkit-transition: opacity 0.2s linear;\n  -o-transition: opacity 0.2s linear;\n  -moz-transition: opacity 0.2s linear;\n  transition: opacity 0.2s linear;\n}\n.blueimp-gallery > .slides > .slide-loading {\n  background: url('data:image/gif;base64,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') center no-repeat;\n  -o-background-size: 64px 64px;\n     background-size: 64px 64px;\n}\n.blueimp-gallery > .slides > .slide-loading > .slide-content {\n  opacity: 0;\n}\n.blueimp-gallery > .slides > .slide-error {\n  background: url('data:image/png;base64,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') center no-repeat;\n}\n.blueimp-gallery > .slides > .slide-error > .slide-content {\n  display: none;\n}\n.blueimp-gallery > .prev,\n.blueimp-gallery > .next {\n  position: absolute;\n  top: 50%;\n  left: 15px;\n  width: 40px;\n  height: 40px;\n  margin-top: -23px;\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 60px;\n  font-weight: 100;\n  line-height: 30px;\n  color: #fff;\n  text-decoration: none;\n  text-shadow: 0 0 2px #000;\n  text-align: center;\n  background: #222;\n  background: rgba(0, 0, 0, 0.5);\n  -webkit-box-sizing: content-box;\n     -moz-box-sizing: content-box;\n          box-sizing: content-box;\n  border: 3px solid #fff;\n  -webkit-border-radius: 23px;\n          border-radius: 23px;\n  opacity: 0.5;\n  cursor: pointer;\n  display: none;\n}\n.blueimp-gallery > .next {\n  left: auto;\n  right: 15px;\n}\n.blueimp-gallery > .close,\n.blueimp-gallery > .title {\n  position: absolute;\n  top: 15px;\n  left: 15px;\n  margin: 0 40px 0 0;\n  font-size: 20px;\n  line-height: 30px;\n  color: #fff;\n  text-shadow: 0 0 2px #000;\n  opacity: 0.8;\n  display: none;\n}\n.blueimp-gallery > .close {\n  padding: 15px;\n  right: 15px;\n  left: auto;\n  margin: -15px;\n  font-size: 30px;\n  text-decoration: none;\n  cursor: pointer;\n}\n.blueimp-gallery > .play-pause {\n  position: absolute;\n  right: 15px;\n  bottom: 15px;\n  width: 15px;\n  height: 15px;\n  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAPCAYAAAGEvU8KAAAABmJLR0QA/wD/AP+gvaeTAAACE0lEQVQ4y7VTPajaUBT+IhE13jQ86GBx6dapo+CWDKVQOtSlUBcDneTRrSAUqfcOTqWLk6uznbtKCt3sVFAKHaxF6uRfoi9qbU+XxBd/+rT2vQ8uudzznfPdnPNdYB9WqxUBEJxz2o0SEQEIe1GxPozFYlOPIzjn5BNkAFBVdeC67m2/imVZG1Uf4W/gnJPjOARAC+iDiCgEAIwxMMb624nycDiEJEmSfyCE2PiiVCpRIpFwANzfoyw456TrOgGAruvrPwoBgCRJ6Pf7jIg+ExE1m03SNO1bUM0wDACAYRhr1VBQolAo/IpGo+epVEqaTCZ3cSQe4ERkT00MAbhXr9d/M8Y+7iMEG7TdPAAQ5KFYLLqRSOTt9pC9wQqf69tvo2Hlcjk6n89fptPpKYDHx1x7A5VKhdrt9hsA7w8ly/5msVjg7OzswnVdBoCObRiy2ewiHo8/cV03vp1oWdalFT3DBJ9F7tRR+YYXsiy/VhSladv2CwCf/qGG4a2NC3vrqtjlwyEiWi6XVK1Wf2qaNmOM1QHcOSC8zg1YQByK7Uw5HA4jn8/L4/FYcRznaa/X+2Ga5lRRlIksy68ARHANCB0iJJNJ1Gq1eKfTuZXJZEqqqn4H8PB/heWrgq1WC7lc7qLb7X4ZDAbPAHzFNWFHuNFowDRNdzabfRiNRs8B9HEDWLtakqSSqqrvbNs+BzC4aVf/AaEAFTjRreu2AAAAAElFTkSuQmCC') 0 0 no-repeat;\n  cursor: pointer;\n  opacity: 0.5;\n  display: none;\n}\n.blueimp-gallery-playing > .play-pause {\n  background-position: -15px 0;\n}\n.blueimp-gallery > .prev:hover,\n.blueimp-gallery > .next:hover,\n.blueimp-gallery > .close:hover,\n.blueimp-gallery > .title:hover,\n.blueimp-gallery > .play-pause:hover {\n  color: #fff;\n  opacity: 1;\n}\n.blueimp-gallery-controls > .prev,\n.blueimp-gallery-controls > .next,\n.blueimp-gallery-controls > .close,\n.blueimp-gallery-controls > .title,\n.blueimp-gallery-controls > .play-pause {\n  display: block;\n  /* Fix z-index issues (controls behind slide element) on Android: */\n  -webkit-transform: translateZ(0);\n     -moz-transform: translateZ(0);\n          transform: translateZ(0);\n}\n.blueimp-gallery-single > .prev,\n.blueimp-gallery-left > .prev,\n.blueimp-gallery-single > .next,\n.blueimp-gallery-right > .next,\n.blueimp-gallery-single > .play-pause {\n  display: none;\n}\n.blueimp-gallery > .slides > .slide > .slide-content,\n.blueimp-gallery > .prev,\n.blueimp-gallery > .next,\n.blueimp-gallery > .close,\n.blueimp-gallery > .play-pause {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n/* Replace PNGs with SVGs for capable browsers (excluding IE<9) */\nbody:last-child .blueimp-gallery > .slides > .slide-error {\n  background-image: url('data:image/svg+xml;charset=utf-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20width%3D%2264%22%20height%3D%2264%22%3E%0A%09%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2225%22%20stroke%3D%22red%22%20stroke-width%3D%227%22%20fill%3D%22black%22%20fill-opacity%3D%220.2%22%2F%3E%0A%09%3Crect%20x%3D%2228%22%20y%3D%227%22%20width%3D%228%22%20height%3D%2250%22%20fill%3D%22red%22%20transform%3D%22rotate(45%2C%2032%2C%2032)%22%2F%3E%0A%3C%2Fsvg%3E');\n}\nbody:last-child .blueimp-gallery > .play-pause {\n  width: 20px;\n  height: 20px;\n  -o-background-size: 40px 20px;\n     background-size: 40px 20px;\n  background-image: url('data:image/svg+xml;charset=utf-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20width%3D%2230%22%20height%3D%2215%22%3E%0A%09%3Cpolygon%20points%3D%222%2C1%202%2C14%2013%2C7%22%20stroke%3D%22black%22%20stroke-width%3D%221%22%20fill%3D%22white%22%2F%3E%0A%09%3Crect%20x%3D%2217%22%20y%3D%222%22%20width%3D%224%22%20height%3D%2211%22%20stroke%3D%22black%22%20stroke-width%3D%221%22%20fill%3D%22white%22%2F%3E%0A%09%3Crect%20x%3D%2224%22%20y%3D%222%22%20width%3D%224%22%20height%3D%2211%22%20stroke%3D%22black%22%20stroke-width%3D%221%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E');\n}\nbody:last-child .blueimp-gallery-playing > .play-pause {\n  background-position: -20px 0;\n}\n\n/* IE7 fixes */\n*+html .blueimp-gallery > .slides > .slide {\n  min-height: 300px;\n}\n*+html .blueimp-gallery > .slides > .slide > .slide-content {\n  position: relative;\n}\n";
 __$$styleInject(css);
 
@@ -2396,12 +2463,7 @@ __$$styleInject(css$4);
 if (typeof window !== 'undefined') {
   window.blueimp = window.blueimp || {};
   window.blueimp.Gallery = Gallery$2;
-
-  // use helper if jQuery isn't present
-  if (typeof window.jQuery === 'undefined') {
-    window.$ = Helper;
-  }
 }
 
 module.exports = Gallery$2;
-//# sourceMappingURL=blueimp-gallery.cjs.js.map
+//# sourceMappingURL=jquery.blueimp-gallery.cjs.js.map
