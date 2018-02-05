@@ -69,9 +69,16 @@ const formats = {
   umd: pkg.browser
 }
 
+const commonPlugins = [
+  resolve(),
+  commonjs(),
+  buble()
+]
+
 Object.keys(formats).forEach((format) => {
-  const plugins = [resolve(), commonjs(), buble()]
-  if (format === 'umd') plugins.push(uglify())
+  const plugins = ((format === 'umd'))
+    ? [uglify()].concat(commonPlugins)
+    : commonPlugins
 
   promise = promise.then(() => rollup.rollup({
     input: 'js/src/main.js',
@@ -92,8 +99,9 @@ const jqueryFormats = {
 }
 
 Object.keys(jqueryFormats).forEach((format) => {
-  const plugins = [resolve(), commonjs(), buble()]
-  if (format === 'umd') plugins.push(uglify())
+  const plugins = ((format === 'umd'))
+    ? [uglify()].concat(commonPlugins)
+    : commonPlugins
 
   promise = promise.then(() => rollup.rollup({
     input: 'js/src/main-jquery.js',
