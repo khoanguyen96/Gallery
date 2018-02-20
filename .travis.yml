@@ -14,12 +14,3 @@ install:
 script:
   - yarn run test
   - yarn run build
-
-deploy:
-  provider: npm
-  email: khoa.tan.nguyen.96@gmail.com
-  api_key:
-    secure: Jgm7+25RXr9J9PGjhGUIf+wpvgfMBEbvdLXdtG3MwIsPWfzaws2QLTwUDtshZL39S1lisien888du61wVaS8BxG2kfluI1VO8guQTirvplil3TAHk3+Te1W4I5UR7iTNn7XmPUd97RV7uhYtvoVda0/ZR9pjDbrhLYyIH9GQYY/vVnEo9GGkN4lEHSCnQnX467YR7SUBOLb5dzCkn+8XGbc5TmF7v88OtUevZ1kG2ZuZ9UQiKItVN9OEz56NSgahLOuf3nvzOLkH2cqJqnDprAnWuu+WOjyNxRb8W4Z6XJHqblXWOhdl+5LoCYOgnctOHaRi5YVmSatd1WaMHpI4B9RhkJm5fH3Iw/ddT/21hMtqPvFdk/6pvQ6mA6l+9LyxtynTLvuqwWwAVavqe/pXoR4xUkmG9CYpOnglYi7R/8UFRwAVHHQdFbMWMI7RkW8STxgYe23LKy2+1wV/o+1zD1CBtJlHa64aV9gh3NZW4AHUu+T2WO0A9PcJ9M3ZMS4YsAb0572ER9+HGx+KTKv3Mu+SzlHmuQkdjBMYw39luYLQRLqbkf4RwXTG5W5So56TP4V9eoQO3aVvyLpaj9UUQ3JLCa6JfsW/hveexcdLaE/rWdK2tH78byUDQ+ef1LyfCzrhxY8PgJhsN6WkxakucicM4Z0BDPIfyJjF66TUpE4=
-  on:
-    tags: true
-    repo: khoanguyen96/Gallery
